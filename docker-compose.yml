@@ -1,0 +1,54 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: taskmanager-db
+    environment:
+      TZ: "Europe/Rome"
+      MYSQL_DATABASE: taskmanager
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      ports:
+        -"3306:3306"
+      volumes:
+        -dbdata:/var/lib/mysql
+    healthcheck:
+        test: mysqladmin ping -h localhost -u taskuser -ptaskpass
+        interval: 10s
+        timeout: 5s
+        retries: 5
+  app:
+    build:
+      context:  .
+    container_name: taskmanager-app
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+        TZ: "Europe/Rome"
+        SPRING_DATASOURCE_URL:
+          "jdbc:mysql://db:3306/taskmanager?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+        SPRING_DATASOURCE_USERNAME:
+          ${DB_USER}
+        SPRING_DATASOURCE_PASSWORD:
+          ${DB_PASSWORD}
+        SPRING_JPA_HIBERNATE_DDL_AUTO:
+          update
+        SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT:
+          org.hibernate.dialect.MySQLDialect
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: taskmanager-pma
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_HOST=db
+    depends_on:
+      - db
+
+volumes:
+   dbdata:
+
