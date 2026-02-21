@@ -1,51 +1,74 @@
-**TASK MANAGER API**
-Progetto Backend svilupatto con Spring Boot e Docker.
-L'applicazione gestisce un sistema di task con persistenza
-su database relazionale e sicurezza avanzata.
+# Task Manager API
 
-**ARCHITETTURA DEL PROGETTO**
-Il codice e' stato strutturato seguendo i principi di 
-**Clean Architecture** e **Separation of Concerns**:
--**Controller & DTO**: utilizzo di Data Transfer Objects per
-disaccoppiare l'entità del database dall'interfaccia API,
-migliorando sicurezza e manutenibilità.
--**Service Layer**: tutta la logica di business é isolata nei
-servizi, garantendo un codice testabile e riutilizzabile.
--**Repository Pattern**: interfaccia diretta con MySQL tramite
-Spring Data JPA.
--**Global Exception Handling**: implementato un sistema
-centralizzato ('@ControllerAdvice') per gestire gli errori
-in modo consistente, restituendo risposte JSON standardizzate
-(ErrorResponse).
--**Soft Delete**: configurato il sistema per non eliminare
-mai definitivamente i dati dal database (hard delete), ma 
-marcati come eliminati tramite una colonna 'deletedAt'.
-Questo garantisce l'integrità dei dati e permette il recupero
-storico, rendendo i task ""invisibili" all'utente ma 
-presistenti per l'amministratore.
+Backend project developed with **Spring Boot** and **Docker**.  
+This application manages a task system with persistent data in a relational database and advanced security features.
 
-**TECNOLOGIE UTILIZZATE**
--Java && Spring Boot: per la logica applicativa.
--MySQL 8: database per le gestione dei dati.
--Docker & Docker Compose: per l'orchestrazione dei servizi.
--PhpMyAdmin: incluso per agevolare il testing e la visualizzazione
-del database.
+---
 
-**SICUREZZA E BEST PRACTICES**
--BCrypt: le password degli utenti sono salvate esclusivamente
-tramite hashing.
--Variabili d'ambiente: i dati sensibili sono isolati in un file 
-.env escluso dal versionamento per proteggere le credenziali.
+## 📐 Project Architecture
 
-**COME AVVIARE IL PROGETTO**
-1.Clona la repository.
-2.Copia il file '.env.example' creando un nuovo file '.env' 
-3.Inserisci le tue credenziali.
-4.Avvia il sistema con: '''bash docker compose up --build'''
+The codebase follows the principles of **Clean Architecture** and **Separation of Concerns**.
 
-**ACCESSO AI SERVIZI**
--Swagger UI(Documentazione API): 
-http://localhost:8080/swagger-ui.html)
--PhpMyAdmin(Interfaccia DB): [http://localhost:8081]
-(http://localhost:8081)
+### 🧱 Layers
 
+#### Controller & DTO
+Uses Data Transfer Objects (DTOs) to decouple database entities from the API interface, improving security and maintainability.
+
+#### Service Layer
+All business logic is isolated in services, making the codebase testable and reusable.
+
+#### Repository Pattern
+Handles direct interaction with MySQL through Spring Data JPA.
+
+#### Global Exception Handling
+Implements centralized error handling using `@ControllerAdvice`, returning consistent JSON error responses.
+
+#### Soft Delete
+Instead of permanently deleting records, tasks are marked as deleted using a `deletedAt` column.  
+This ensures data integrity and allows historical recovery while keeping tasks invisible to users.
+
+---
+
+## 🛠️ Technologies Used
+
+- Java & Spring Boot – Application framework and core logic
+- MySQL 8 – Relational database for task persistence
+- Docker & Docker Compose – Containerization and service orchestration
+- PhpMyAdmin – Database management interface for development and testing
+
+---
+
+## 🔐 Security & Best Practices
+
+- Passwords are securely stored using **BCrypt hashing**
+- Sensitive configuration values are stored in environment variables (`.env`)
+- The `.env` file is excluded from version control for security purposes
+
+---
+
+## 🚀 How to Run the Project
+
+1. Clone the repository
+2. Copy `.env.example` to a new file named `.env`
+3. Fill in your credentials in the `.env` file
+4. Start the services using Docker:
+
+```bash
+docker compose up --build
+```
+
+---
+
+## 📡 Accessing Services
+
+- **API Documentation (Swagger UI):**  
+  http://localhost:8080/swagger-ui.html
+
+- **PhpMyAdmin (Database UI):**  
+  http://localhost:8081
+
+---
+
+## 🎯 Project Overview
+
+This project provides a secure and scalable backend API for task management, built with modern development practices. It emphasizes clean architecture, maintainability, security, and containerized deployment for ease of setup and collaboration.
