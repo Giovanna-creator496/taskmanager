@@ -9,11 +9,11 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       ports:
-        -"3306:3306"
+        - "3306:3306"
       volumes:
         -dbdata:/var/lib/mysql
     healthcheck:
-        test: mysqladmin ping -h localhost -u taskuser -ptaskpass
+        test: mysqladmin ping -h localhost -u ${DB_USER} -p${DB_PASSWORD}
         interval: 10s
         timeout: 5s
         retries: 5
@@ -45,10 +45,11 @@ services:
     ports:
       - "8081:80"
     environment:
-      - PMA_HOST=db
+      PMA_HOST: db
+      PMA_USER: ${DB_USER}
+      PMA_PASSWORD: ${DB_PASSWORD}
     depends_on:
       - db
 
 volumes:
    dbdata:
-
